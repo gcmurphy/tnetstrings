@@ -56,7 +56,7 @@ std::string s = tnetstring::readString(std::stringstream("3:foo,"));
 
 ```
 
-#### Consuming a dictionary 
+## Consuming a dictionary 
 
 As per the specification:  A dictionary must use "strings" for keys only. 
 
@@ -72,7 +72,7 @@ std::map<std::string, int> = tnetstring::readDictionaryOf<int>(std::cin, toInteg
 ```
 
 
-#### Consuming a list
+## Consuming a list
 
 ```
 tnetstring::List items = tnetstring::readList(std::cin);
