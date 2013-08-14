@@ -39,7 +39,7 @@ b.enter()
  .exit(LIST)
 
 std::cout << b.content() << std::endl;
-// 33:16:Thisisastring,6:123456#4:true!]
+//36:16:This is a string,6:123456#4:true!]
 
 ```
 

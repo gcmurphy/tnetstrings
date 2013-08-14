@@ -18,7 +18,7 @@ Builder &Builder::enter(){
 }
 
 Builder &Builder::exit(TYPE type){
-  std::string tmp = buffer.str();
+  //std::string tmp = buffer.str();
   std::vector<char> data;
   std::copy(std::istream_iterator<char>(buffer), 
       std::istream_iterator<char>(), 
@@ -28,11 +28,11 @@ Builder &Builder::exit(TYPE type){
 
   clearBuffer();
   if (nested.empty()){
-    buffer << raw;
+    buffer << std::noskipws << raw;
 
   } else {
     
-    buffer << nested.top() << raw;
+    buffer << std::noskipws << nested.top() << raw;
     nested.pop();
   }
 
@@ -84,7 +84,7 @@ Builder &Builder::append(const std::string &str){
     data.push_back(c);
   }
   RawType r(data.size(), data, STRING);
-  buffer << r;
+  buffer << std::noskipws << r;
   return *this;
 }
 
