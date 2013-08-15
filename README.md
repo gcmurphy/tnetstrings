@@ -50,9 +50,8 @@ std::string s = tnetstring::readString(std::cin);
 float f = tnetstring::readFloat(std::cin);
 bool b = tnetstring::readBool(std::cin);
 
-// TODO (Provide more overloads to read directly from strings etc).
-// Presently you would need to do this - 
-std::string s = tnetstring::readString(std::stringstream("3:foo,"));
+std::string s = tnetstring::stringValue("3:foo,");
+int i = tnetstring::integerValue("4:1234#");
 
 ```
 
@@ -65,9 +64,10 @@ tnetstring::Dictionary dict = tnetstring::readDictionary(std::cin);
 std::string str =  tnetstring::toString(dict["this_key_has_a_string_value"]);
 float f = tnetstring::toFloat(dict["this_key_has_a_float_value"]);
 
-// TODO (Coming soon something along these lines) 
-std::map<std::string, int> = tnetstring::readDictionaryOf<int>(std::cin, toInteger);
-
+// Converting using lambda or conversion function 
+using namespace std;
+using namespace tnetstring;
+map<string, string> actual = toDictionaryOf<string>(readDictionary(cin), toString);
 
 ```
 
@@ -81,8 +81,11 @@ for (RawType item : items){
   std::cout << tnetstring::toString(item) << std::endl;
 }
 
-// TODO (Coming soon something along these lines) 
-std::vector<int> items = tnetstring::readListOf<int>(std::cin, toInteger) 
+
+// Converting using lambda or conversion function
+std::vector<int> items = tnetstring::toListOf<int>(rawitems, tnetstring::toInteger);
+std::vector<int> items = tnetstring::toListOf<int>(readList(std::cin), tnetstring::toInteger);
+
 ```
 
 

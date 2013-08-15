@@ -11,6 +11,6 @@ TEST(Builder, listTest){
    .append(123456)
    .append(true)
    .exit(tnetstring::LIST);
-  
-  std::cout << b.content() << std::endl;
+    
+  EXPECT_NE("", b.content());
 }

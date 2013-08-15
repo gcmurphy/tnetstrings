@@ -6,6 +6,7 @@
 #include <vector>
 #include <stdexcept>
 #include <sstream>
+#include <functional>
 
 namespace tnetstring {
 
@@ -67,7 +68,7 @@ namespace tnetstring {
       void copy(std::ostream &out) const ;
       size_t size() const ;
       TYPE type() const ;
-      std::vector<char> buffer() const;
+      const std::vector<char>& buffer() const;
 
       friend std::ostream& operator << (std::ostream &os, const RawType &t);
   };
@@ -78,9 +79,9 @@ namespace tnetstring {
       RawType raw;
 
     public: 
-      explicit Type(RawType &t) : raw(t.size(), t.buffer(), t.type()){
+      explicit Type(const RawType &t) : raw(t.size(), t.buffer(), t.type()){
       }
-      T value(){
+      T value() const {
         T val;
         std::stringstream tmp;
         raw.copy(tmp);
@@ -98,30 +99,58 @@ namespace tnetstring {
   using List = std::vector<RawType>;
 
   template<typename T, TYPE t>
-  T convert(RawType &r){
+  T convert(const RawType &r){
     if (r.type() != t){
       throw ConversionError(r.type(), t);
     }
     return Type<T>(r).value();
   }
 
-  std::string toString(RawType &r);
+  std::string toString(const RawType &r);
+  std::string stringValue(const std::string &input);
   std::string readString(std::istream &input);
-  int toInteger(RawType &r);
+
+  int toInteger(const RawType &r);
+  int integerValue(const std::string &input);
   int readInteger(std::istream &input);
-  float toFloat(RawType &r);
+
+  float toFloat(const RawType &r);
+  float floatValue(const std::string &input);
   float readFloat(std::istream &input);
-  bool toBoolean(RawType &r);
+
+  bool toBoolean(const RawType &r);
+  bool booleanValue(const std::string &input);
   bool readBoolean(std::istream &input);
 
-  Dictionary toDictionary(RawType &r);
+  Dictionary toDictionary(const RawType &r);
+  Dictionary dictionaryValue(const std::string &input);
   Dictionary readDictionary(std::istream &input);
-  List toList(RawType &r);
+
+  List toList(const RawType &r);
+  List listValue(const std::string &input);
   List readList(std::istream &input);
 
-  // TODO: Something along these lines..
-  //template<typename T> std::vector<T> readListOf<T>(std::istream &input);
-  //template<typename K, typename V> std::map<K, V> readMapOf(std::istream &input);
+  template<typename T> 
+  std::vector<T> toListOf(const List &items, 
+    std::function<T(const RawType &r)> converter){
+
+    std::vector<T> converted;
+    for (auto item : items){
+      converted.push_back(converter(item));
+    }
+    return converted;
+  }
+
+  template<typename T>
+  std::map<std::string, T> toDictionaryOf(const Dictionary &dict, 
+    std::function<T(const RawType &r)> converter){
+
+    std::map<std::string, T> converted;
+    for (const auto& entry : dict) {
+      converted[entry.first] = converter(entry.second);
+    }
+    return converted;
+  }
 
 };
 

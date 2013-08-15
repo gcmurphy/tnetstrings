@@ -79,7 +79,7 @@ TYPE RawType::type() const{
   return dataType;
 }
 
-std::vector<char> RawType::buffer() const {
+const std::vector<char> &RawType::buffer() const {
   return data;
 }
 
@@ -99,9 +99,9 @@ class Type<std::string> {
   private:
     RawType raw;
   public:
-    explicit Type(RawType &t) : raw(t.size(), t.buffer(), t.type()){
+    explicit Type(const RawType &t) : raw(t.size(), t.buffer(), t.type()){
     }
-    std::string value(){
+    std::string value() const {
       std::stringstream tmp;
       raw.copy(tmp);
       return tmp.str();
@@ -114,10 +114,10 @@ class Type<bool> {
   private:
     RawType raw;
   public:
-    explicit Type(RawType &t) : raw(t.size(), t.buffer(), t.type()){
+    explicit Type(const RawType &t) : raw(t.size(), t.buffer(), t.type()){
     }
 
-    bool value(){
+    bool value() const {
       std::string boolString;
       std::stringstream tmp;
       raw.copy(tmp);
@@ -135,9 +135,9 @@ class Type<List>{
   private:
     RawType raw;
   public:
-    explicit Type(RawType &t) : raw(t.size(), t.buffer(), t.type()){
+    explicit Type(const RawType &t) : raw(t.size(), t.buffer(), t.type()){
     }
-    List value(){
+    List value() const {
       if (raw.type() != LIST){
         throw ConversionError(raw.type(), LIST); 
       }
@@ -159,10 +159,10 @@ class Type<Dictionary>{
   private:
     RawType raw;
   public:
-    explicit Type(RawType &t) : raw(t.size(), t.buffer(), t.type()){
+    explicit Type(const RawType &t) : raw(t.size(), t.buffer(), t.type()){
     }
 
-    Dictionary value(){
+    Dictionary value() const {
       if (raw.type() != DICTIONARY){
         throw ConversionError(raw.type(), DICTIONARY);
       }
@@ -184,8 +184,13 @@ class Type<Dictionary>{
     }
 };
 
-std::string toString(RawType &r){
+std::string toString(const RawType &r){
   return convert<std::string, STRING>(r);
+}
+
+std::string stringValue(const std::string &str){
+  std::stringstream ss(str);
+  return readString(ss);
 }
 
 std::string readString(std::istream &input){
@@ -193,8 +198,13 @@ std::string readString(std::istream &input){
   return toString(raw);
 }
 
-int toInteger(RawType &r){
+int toInteger(const RawType &r){
   return convert<int, INTEGER>(r);
+}
+
+int integerValue(const std::string &str){
+  std::stringstream ss(str);
+  return readInteger(ss);
 }
 
 int readInteger(std::istream &input){
@@ -202,8 +212,13 @@ int readInteger(std::istream &input){
   return toInteger(raw);
 }
 
-float toFloat(RawType &r){
+float toFloat(const RawType &r){
   return convert<float, FLOAT>(r);
+}
+
+float floatValue(const std::string &str){
+  std::stringstream ss(str);
+  return readFloat(ss);
 }
 
 float readFloat(std::istream &input){
@@ -211,8 +226,13 @@ float readFloat(std::istream &input){
   return toFloat(raw);
 }
 
-bool toBoolean(RawType &r){
+bool toBoolean(const RawType &r){
   return convert<bool, BOOLEAN>(r);
+}
+
+bool booleanValue(const std::string &str){
+  std::stringstream ss(str);
+  return readBoolean(ss);
 }
 
 bool readBoolean(std::istream &input){
@@ -220,8 +240,13 @@ bool readBoolean(std::istream &input){
   return toBoolean(raw); 
 }
 
-Dictionary toDictionary(RawType &r){
+Dictionary toDictionary(const RawType &r){
   return convert<Dictionary, DICTIONARY>(r);
+}
+
+Dictionary dictionaryValue(const std::string &str){
+  std::stringstream ss(str);
+  return readDictionary(ss);
 }
 
 Dictionary readDictionary(std::istream &input){
@@ -229,8 +254,13 @@ Dictionary readDictionary(std::istream &input){
   return toDictionary(raw);
 }
 
-List toList(RawType &r){
+List toList(const RawType &r){
   return convert<List, LIST>(r);
+}
+
+List listValue(const std::string &str){
+  std::stringstream ss(str);
+  return readList(ss);
 }
 
 List readList(std::istream &input){
