@@ -12,7 +12,8 @@ warnings = [
 
 include_dirs = [
   "-I.",
-  "-I./include"
+  "-I./include",
+  "-I./gtest-1.6.0/include"
 ]
 
 defines = [
@@ -29,7 +30,10 @@ cflags.extend(include_dirs)
 env = Environment()
 env['ENV']['TERM'] = os.environ['TERM']
 env.Append(CPPDEFINES=defines)
-env.Replace(CXX='clang++')
+if sys.platform == "darwin" : 
+  env.Replace(CXX='g++-4.8')
+else:
+  env.Replace(CXX='clang++')
 env.Append(CCFLAGS=cflags)
 
 srcs = [
@@ -47,7 +51,7 @@ if testing_enabled :
     testlibs = [libtnetstring, 'gtest', 'gtest_main']
     testsrcs = ['src/unittests.cpp']
     testsrcs.extend(glob("src/*_test.cpp"))
-    testmain = env.Program("test", testsrcs, LIBS=testlibs, LIBPATH="./libs")
+    testmain = env.Program("test", testsrcs, LIBS=testlibs, LIBPATH="./gtest-1.6.0")
     tests = Alias("test", [testmain])
     AlwaysBuild(tests)
 
