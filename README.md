@@ -1,8 +1,10 @@
 ## Overview
 
-A rather bad implementation of [tnetstrings](http://tnetstrings.org/) for C++ 
+A basic implementation of [tnetstrings](http://tnetstrings.org/) for C++ 
 
-(Still a work in progress)
+## License
+
+BSD 2-clause "Simplified" License
 
 ## Creating a tnetstring
 
