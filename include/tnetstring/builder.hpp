@@ -3,20 +3,20 @@
 // can be found in the LICENSE file.
 
 #ifndef tnetstring_builder_h
-#define tnetstring_builder_h 
+#define tnetstring_builder_h
 
 #include <tnetstring/types.hpp>
 #include <stack>
 
 namespace tnetstring {
-  
+
   class Builder {
-  
+
     private:
-      std::stack<std::string> nested; 
+      std::stack<std::string> nested;
       std::stringstream buffer;
       void clearBuffer();
-    
+
     public:
       Builder &enter();
       Builder &exit(TYPE t=DICTIONARY);

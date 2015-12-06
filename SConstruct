@@ -30,7 +30,7 @@ cflags.extend(include_dirs)
 env = Environment()
 env['ENV']['TERM'] = os.environ['TERM']
 env.Append(CPPDEFINES=defines)
-if sys.platform == "darwin" : 
+if sys.platform == "darwin" :
   env.Replace(CXX='g++-4.8')
 else:
   env.Replace(CXX='clang++')
@@ -46,8 +46,8 @@ libs = [
 
 libtnetstring = env.SharedLibrary('tnetstring', srcs, LIBS=libs)
 
-testing_enabled = True 
-if testing_enabled : 
+testing_enabled = True
+if testing_enabled :
     testlibs = [libtnetstring, 'gtest', 'gtest_main']
     testsrcs = ['src/unittests.cpp']
     testsrcs.extend(glob("src/*_test.cpp"))

@@ -6,5 +6,5 @@
 #define tnetstring_h
 #include "types.hpp"
 #include "builder.hpp"
-#endif 
+#endif
 

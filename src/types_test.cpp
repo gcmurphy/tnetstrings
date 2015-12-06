@@ -11,7 +11,7 @@
 
 TEST(Types, readString){
 
-  tnetstring::Builder b;    
+  tnetstring::Builder b;
   b.append("This is a test string");
 
   EXPECT_NE("", b.content());
@@ -23,20 +23,20 @@ TEST(Types, readString){
 
 TEST(Types, readFloat){
 
-  tnetstring::Builder b;    
+  tnetstring::Builder b;
   b.append(3.14159f);
 
   EXPECT_NE("", b.content());
 
   std::stringstream input(b.content());
-  float pi = tnetstring::readFloat(input); 
+  float pi = tnetstring::readFloat(input);
   EXPECT_EQ(3.14159f, pi);
 }
 
 
 TEST(Types, readDictionary){
 
-  tnetstring::Builder b;    
+  tnetstring::Builder b;
   std::map<std::string, std::string> dict;
   dict["key1"] = "value1";
   dict["key2"] = "value2";
@@ -61,7 +61,7 @@ TEST(Types, readDictionary){
 
 TEST(Types, readList){
 
-  tnetstring::Builder b;    
+  tnetstring::Builder b;
   std::vector<std::string> list = { "Larry", "Moe", "Curly" };
   b.append(list);
 
@@ -74,8 +74,8 @@ TEST(Types, readList){
   EXPECT_EQ(tnetstring::toString(tlist[1]), "Moe");
   EXPECT_EQ(tnetstring::toString(tlist[2]), "Curly");
 
-  float sum = 0.0f; 
-  tnetstring::Builder floats; 
+  float sum = 0.0f;
+  tnetstring::Builder floats;
   floats.enter().append(5.0f).append(1.0f).append(9.0f).exit(tnetstring::LIST);
 
   input.str(floats.content());
@@ -100,7 +100,7 @@ TEST(Types, booleanValue){
 
 
 TEST(Types, toListOf){
-  tnetstring::Builder b; 
+  tnetstring::Builder b;
   b.enter().append(1).append(1).append(1).exit(tnetstring::LIST);
   tnetstring::List rawitems = tnetstring::listValue(b.content());
 
@@ -114,16 +114,16 @@ TEST(Types, toListOf){
 TEST(Types, toDictionaryOf){
 
   std::map<std::string, std::string> expected = {
-    { "key1" , "val1"}, 
-    { "key2" , "val2"}, 
+    { "key1" , "val1"},
+    { "key2" , "val2"},
     { "key3" , "val3"}
   };
 
-  tnetstring::Builder b; 
+  tnetstring::Builder b;
   b.append(expected);
 
   tnetstring::Dictionary rawDict = tnetstring::dictionaryValue(b.content());
-  std::map<std::string, std::string> actual = 
+  std::map<std::string, std::string> actual =
     tnetstring::toDictionaryOf<std::string>(rawDict, tnetstring::toString);
 
   for (auto &kv : actual){

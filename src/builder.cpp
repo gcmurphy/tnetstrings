@@ -11,7 +11,7 @@
 namespace tnetstring {
 
 void Builder::clearBuffer(){
-  buffer.str("");  
+  buffer.str("");
   buffer.clear();
 }
 
@@ -24,8 +24,8 @@ Builder &Builder::enter(){
 Builder &Builder::exit(TYPE type){
   //std::string tmp = buffer.str();
   std::vector<char> data;
-  std::copy(std::istream_iterator<char>(buffer), 
-      std::istream_iterator<char>(), 
+  std::copy(std::istream_iterator<char>(buffer),
+      std::istream_iterator<char>(),
       std::back_inserter(data));
 
   RawType raw(data.size(), data, type);
@@ -35,7 +35,7 @@ Builder &Builder::exit(TYPE type){
     buffer << std::noskipws << raw;
 
   } else {
-    
+
     buffer << std::noskipws << nested.top() << raw;
     nested.pop();
   }
@@ -52,10 +52,10 @@ std::string Builder::content(){
 
 Builder &Builder::append(int i){
   std::vector<char> data;
-  std::stringstream ss; 
-  ss << i; 
-  std::copy(std::istream_iterator<char>(ss), 
-      std::istream_iterator<char>(), 
+  std::stringstream ss;
+  ss << i;
+  std::copy(std::istream_iterator<char>(ss),
+      std::istream_iterator<char>(),
       std::back_inserter(data));
 
   RawType r(data.size(), data, INTEGER);
@@ -66,10 +66,10 @@ Builder &Builder::append(int i){
 Builder &Builder::append(float f){
 
   std::vector<char> data;
-  std::stringstream ss; 
-  ss << f; 
-  std::copy(std::istream_iterator<char>(ss), 
-      std::istream_iterator<char>(), 
+  std::stringstream ss;
+  ss << f;
+  std::copy(std::istream_iterator<char>(ss),
+      std::istream_iterator<char>(),
       std::back_inserter(data));
 
   RawType r(data.size(), data, FLOAT);
@@ -93,7 +93,7 @@ Builder &Builder::append(const std::string &str){
 }
 
 Builder &Builder::append(bool b){
-  std::string bstr = (b) ? "true" : "false"; 
+  std::string bstr = (b) ? "true" : "false";
   std::vector<char> data;
   for (char c : bstr){
     data.push_back(c);

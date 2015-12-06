@@ -3,7 +3,7 @@
 // can be found in the LICENSE file.
 
 #ifndef tnetstring_types_h
-#define tnetstring_types_h 
+#define tnetstring_types_h
 
 #include <iostream>
 #include <map>
@@ -15,22 +15,22 @@
 namespace tnetstring {
 
   enum TYPE {
-    STRING    = ',', 
-    INTEGER   = '#', 
-    FLOAT     = '^', 
-    BOOLEAN   = '!', 
-    LIST      = ']', 
+    STRING    = ',',
+    INTEGER   = '#',
+    FLOAT     = '^',
+    BOOLEAN   = '!',
+    LIST      = ']',
     DICTIONARY= '}',
     NULL_PTR  = '~'
   };
 
   static std::map<TYPE, std::string> TYPE_NAME = {
-    { BOOLEAN , "boolean" }, 
-    { STRING  , "string"  }, 
-    { INTEGER , "integer" }, 
-    { FLOAT   , "float"   }, 
+    { BOOLEAN , "boolean" },
+    { STRING  , "string"  },
+    { INTEGER , "integer" },
+    { FLOAT   , "float"   },
     { LIST    , "list"    },
-    { DICTIONARY, "dictionary" }, 
+    { DICTIONARY, "dictionary" },
     { NULL_PTR, "null" }
   };
 
@@ -50,7 +50,7 @@ namespace tnetstring {
       const char *what() const throw();
   };
 
-  class InvalidInputError : public std::exception { 
+  class InvalidInputError : public std::exception {
      private:
       std::string error;
     public:
@@ -65,7 +65,7 @@ namespace tnetstring {
       std::vector<char> data;
       TYPE dataType;
 
-    public: 
+    public:
       RawType();
       RawType(std::istream &input);
       RawType(size_t sz, const std::vector<char> &buf,  TYPE t);
@@ -79,10 +79,10 @@ namespace tnetstring {
 
   template<typename T>
   class Type {
-    private: 
+    private:
       RawType raw;
 
-    public: 
+    public:
       explicit Type(const RawType &t) : raw(t.size(), t.buffer(), t.type()){
       }
       T value() const {
@@ -134,8 +134,8 @@ namespace tnetstring {
   List listValue(const std::string &input);
   List readList(std::istream &input);
 
-  template<typename T> 
-  std::vector<T> toListOf(const List &items, 
+  template<typename T>
+  std::vector<T> toListOf(const List &items,
     std::function<T(const RawType &r)> converter){
 
     std::vector<T> converted;
@@ -146,7 +146,7 @@ namespace tnetstring {
   }
 
   template<typename T>
-  std::map<std::string, T> toDictionaryOf(const Dictionary &dict, 
+  std::map<std::string, T> toDictionaryOf(const Dictionary &dict,
     std::function<T(const RawType &r)> converter){
 
     std::map<std::string, T> converted;

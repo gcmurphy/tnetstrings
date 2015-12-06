@@ -7,16 +7,16 @@
 namespace tnetstring {
 
 //
-// Errors 
+// Errors
 //
 InputError::InputError(char invalid, size_t pos){
   std::stringstream e;
-  e << "Unexpected character `" << invalid << "` at position " << pos; 
+  e << "Unexpected character `" << invalid << "` at position " << pos;
   error = e.str();
 }
 
-const char *InputError::what() const throw() { 
-  return error.c_str(); 
+const char *InputError::what() const throw() {
+  return error.c_str();
 }
 
 ConversionError::ConversionError(TYPE actual, TYPE expected){
@@ -29,9 +29,9 @@ ConversionError::ConversionError(TYPE actual, TYPE expected){
   error = e.str();
 };
 
-const char *ConversionError::what() const throw(){ 
-  return error.c_str(); 
-}  
+const char *ConversionError::what() const throw(){
+  return error.c_str();
+}
 
 InvalidInputError::InvalidInputError(const std::string &e) : error(e) {
 }
@@ -41,18 +41,18 @@ const char *InvalidInputError::what() const throw(){
 }
 
 
-// 
+//
 // Raw Type implementation
 //
 
 RawType::RawType() : dataType(NULL_PTR){
 }
 
-RawType::RawType(size_t sz, const std::vector<char> &buf,  TYPE t) 
+RawType::RawType(size_t sz, const std::vector<char> &buf,  TYPE t)
   : dataSize(sz)
   , data(buf)
   , dataType(t){
-}  
+}
 
 
 RawType::RawType(std::istream &input){
@@ -79,7 +79,7 @@ size_t RawType::size() const {
   return dataSize;
 }
 
-TYPE RawType::type() const{ 
+TYPE RawType::type() const{
   return dataType;
 }
 
@@ -88,13 +88,13 @@ const std::vector<char> &RawType::buffer() const {
 }
 
 std::ostream& operator<<(std::ostream &out, const RawType &raw) {
-  out << raw.size() << ":"; 
+  out << raw.size() << ":";
   raw.copy(out);
   out << static_cast<char>(raw.type());
   return out;
 }
 
-// 
+//
 // Template specialization
 //
 
@@ -143,11 +143,11 @@ class Type<List>{
     }
     List value() const {
       if (raw.type() != LIST){
-        throw ConversionError(raw.type(), LIST); 
+        throw ConversionError(raw.type(), LIST);
       }
 
       List list;
-      std::stringstream tmp; 
+      std::stringstream tmp;
       raw.copy(tmp);
       long len = tmp.str().size();
       while (tmp.tellg() < len){
@@ -172,7 +172,7 @@ class Type<Dictionary>{
       }
 
       Dictionary dict;
-      std::stringstream tmp; 
+      std::stringstream tmp;
       raw.copy(tmp);
 
       long len = tmp.str().size();
@@ -241,7 +241,7 @@ bool booleanValue(const std::string &str){
 
 bool readBoolean(std::istream &input){
   RawType raw(input);
-  return toBoolean(raw); 
+  return toBoolean(raw);
 }
 
 Dictionary toDictionary(const RawType &r){

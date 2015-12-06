@@ -1,6 +1,6 @@
 ## Overview
 
-A basic implementation of [tnetstrings](http://tnetstrings.org/) for C++ 
+A basic implementation of [tnetstrings](http://tnetstrings.org/) for C++
 
 ## License
 
@@ -8,30 +8,30 @@ BSD 2-clause "Simplified" License
 
 ## Creating a tnetstring
 
-This library uses a simple builder pattern to allow for the construction 
-of generic tnetstrings. 
+This library uses a simple builder pattern to allow for the construction
+of generic tnetstrings.
 
 ```
 tnetstring::Builder b;
 
 b.append("foo");
-b.append(453); 
+b.append(453);
 
 std::cout << b.content() << std::endl;
 // 3:foo,3:453#
 
 ```
 
-You can currently append a map<string, string> or a vector<string>. For 
-mixed content lists or dictionaries (or dictionaries of lists etc etc) 
-you will need to use a slightly different API. 
+You can currently append a map<string, string> or a vector<string>. For
+mixed content lists or dictionaries (or dictionaries of lists etc etc)
+you will need to use a slightly different API.
 
 ```
 // Create a list of random things
 
 using namespace tnetstring;
 
-Builder b; 
+Builder b;
 
 // A list of string, int, bool
 b.enter()
@@ -57,16 +57,16 @@ int i = tnetstring::integerValue("4:1234#");
 
 ```
 
-## Consuming a dictionary 
+## Consuming a dictionary
 
-As per the specification:  A dictionary must use "strings" for keys only. 
+As per the specification:  A dictionary must use "strings" for keys only.
 
-``` 
+```
 tnetstring::Dictionary dict = tnetstring::readDictionary(std::cin);
 std::string str =  tnetstring::toString(dict["this_key_has_a_string_value"]);
 float f = tnetstring::toFloat(dict["this_key_has_a_float_value"]);
 
-// Converting using lambda or conversion function 
+// Converting using lambda or conversion function
 using namespace std;
 using namespace tnetstring;
 map<string, string> actual = toDictionaryOf<string>(readDictionary(cin), toString);
